@@ -22,7 +22,7 @@ class Calculator {
                 return this.errors.SYNTAX
             }
             // get <number><operator><number>
-            const inputData = this.seperate(input)
+            const inputData = this.separate(input)
             if (!inputData) {
                 console.log(this.errors.SYNTAX, `(3) input: ${input}`)
                 return this.errors.SYNTAX
@@ -33,20 +33,20 @@ class Calculator {
                 return this.errors.SYNTAX
             }
 
-            // REVIEW why should 0.1+0.2 be an error? Unclear regadring the brief around "Rounding"
+            // REVIEW why should 0.1+0.2 be an error? Unclear regarding the brief around "Rounding"
             if(Math.round(inputData.numL) ===0 && Math.round(inputData.numR) ===0){
                 console.log(this.errors.SYNTAX, `(5) input: ${input}`)
                 return this.errors.SYNTAX
             }
 
             if (this.divisionNearZero(inputData.operator,inputData.numR)) {
-                console.log(this.errors.DEVISION, `(6) input: ${input}`)
-                return this.errors.DEVISION
+                console.log(this.errors.DIVISION, `(6) input: ${input}`)
+                return this.errors.DIVISION
             }
 
             if (this.divisionModuloByZero(inputData.operator,inputData.numR)) {
-                console.log(this.errors.DEVISION_MODULO, `(7) input: ${input}`)
-                return this.errors.DEVISION_MODULO
+                console.log(this.errors.DIVISION_MODULO, `(7) input: ${input}`)
+                return this.errors.DIVISION_MODULO
             }
             
 
@@ -67,7 +67,7 @@ class Calculator {
     }
 
     /**
-     * Clen string from next line chars
+     * Clean string from next line chars
      * @param {any} buffered
      * @returns {string}
      */
@@ -141,11 +141,11 @@ class Calculator {
     }
 
     /**
-     * Seperate input, example: 10+20 to numL+numR
+     * separate input, example: 10+20 to numL+numR
      * @param {string} input
      * @returns {{numL:number,operator:string,numR:number}}
      */
-    seperate(input) {
+    separate(input) {
         /** @type {{numL:number,operator:string,numR:number}} */
         let o
         for (let inx = 0; inx < this.operators.length; inx++) {
@@ -176,7 +176,7 @@ class Calculator {
    
 
     /**
-     * We only accept usigned 32 bit integers, so only return those values
+     * We only accept unsigned 32 bit integers, so only return those values
      * @param {number} num
      * @returns {number}
      */
@@ -191,9 +191,9 @@ class Calculator {
     get errors() {
         let pre = 'error'
         return {
-            DEVISION: `${pre}: division by zero`,
+            DIVISION: `${pre}: division by zero`,
             MODULO: `${pre}: modulo by zero`,
-            DEVISION_MODULO: `${pre}: division, or modulo by zero`,
+            DIVISION_MODULO: `${pre}: division, or modulo by zero`,
             SYNTAX: `${pre}: incorrect syntax`,
         }
     }
@@ -225,7 +225,7 @@ function START_SERVER() {
                 // Print message to server
                 console.log('client output:', output, ` bytes: ${client.bytesRead}`)
 
-                // Send and print result to clinet
+                // Send and print result to client
                 client.end(output + '')
             })
         })

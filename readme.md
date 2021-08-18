@@ -1,16 +1,23 @@
 
 
-### TCP-server-calculator
+## TCP-server-calculator
 This is a simple Node.js calculator handling 32bit unsigned integers using npm/net module to communicate with client via TCP connection, and send signal inputs via CLI on port 1010 with simple commands:
 
 ```sh
 # Using netcat to produce results
 $/ echo 1/12 | nc localhost 1010 # should echo back with calculated result
-
 ``` 
 
 
-### Example Input
+### Start
+To start the server just run:
+
+```sh
+/$ npm start # or /$ node index
+
+```
+
+#### Example Input
 Provide each input via netcat/nc: `$/echo {input} | nc localhost 1010`
 
 ```sh 
@@ -27,7 +34,7 @@ hello world # error
 3%0 # error
 ```
 
-### Example Output
+#### Example Output
 
 ```sh
 2

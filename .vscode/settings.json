@@ -161,5 +161,8 @@
     "requireModuleSupport.pluginExtensions": {
         "css": ".css",
         "html":".html"
-    }
+    },
+    "cSpell.words": [
+        "sanatized"
+    ]
 }
