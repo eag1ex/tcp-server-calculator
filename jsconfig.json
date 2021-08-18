@@ -1,0 +1,22 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "declaration": true,
+        "checkJs": true,
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "module": "commonJS",
+        "target": "es5",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+    },
+    "include": [
+        "index.js",
+    ],
+    "exclude": [
+        "node_modules",
+        "tmp"
+    ]
+}
