@@ -218,13 +218,14 @@ function START_SERVER() {
 
                 const clean = calc.sanatizedInput(buffered)
                 console.log(`client input: ${clean}`, ' bytesWritten: ', client.bytesWritten)
-                console.log(' ')
+               
 
                 const output = calc.$result(clean)
 
                 // Print message to server
                 console.log('client output:', output, ` bytes: ${client.bytesRead}`)
-
+                console.log(' ')
+                
                 // Send and print result to client
                 client.end(output + '')
             })
