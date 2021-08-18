@@ -34,21 +34,20 @@ class Calculator {
             }
 
             // REVIEW why should 0.1+0.2 be an error? Unclear regarding the brief around "Rounding"
-            if(Math.round(inputData.numL) ===0 && Math.round(inputData.numR) ===0){
+            if (Math.round(inputData.numL) === 0 && Math.round(inputData.numR) === 0) {
                 console.log(this.errors.SYNTAX, `(5) input: ${input}`)
                 return this.errors.SYNTAX
             }
 
-            if (this.divisionNearZero(inputData.operator,inputData.numR)) {
+            if (this.divisionNearZero(inputData.operator, inputData.numR)) {
                 console.log(this.errors.DIVISION, `(6) input: ${input}`)
                 return this.errors.DIVISION
             }
 
-            if (this.divisionModuloByZero(inputData.operator,inputData.numR)) {
+            if (this.divisionModuloByZero(inputData.operator, inputData.numR)) {
                 console.log(this.errors.DIVISION_MODULO, `(7) input: ${input}`)
                 return this.errors.DIVISION_MODULO
             }
-            
 
             // perform our calculation
             const sum = this.calc(inputData.numL, inputData.operator, inputData.numR)
@@ -78,27 +77,25 @@ class Calculator {
 
     /**
      * check if right hand number is near zero with / division operator
-     * @param {string} operator 
-     * @param {number} numR 
+     * @param {string} operator
+     * @param {number} numR
      * @returns {boolean}
      */
-    divisionNearZero(operator,numR){
-        if(operator==='/' && Math.round(numR) ===0) return true
+    divisionNearZero(operator, numR) {
+        if (operator === '/' && Math.round(numR) === 0) return true
         else return false
     }
 
     /**
      * check if right hand number is zero with /% operators
-     * @param {string} operator 
-     * @param {number} numR 
+     * @param {string} operator
+     * @param {number} numR
      * @returns {boolean}
      */
-    divisionModuloByZero(operator,numR){
-        if(['/','%'].indexOf(operator)!==-1 && numR<=0) return true
+    divisionModuloByZero(operator, numR) {
+        if (['/', '%'].indexOf(operator) !== -1 && numR <= 0) return true
         else return false
     }
-
-   
 
     /**
      * Calculate results
@@ -173,8 +170,6 @@ class Calculator {
         return regex.test(input)
     }
 
-   
-
     /**
      * We only accept unsigned 32 bit integers, so only return those values
      * @param {number} num
@@ -199,13 +194,13 @@ class Calculator {
     }
 }
 
-const calc = new Calculator()
-
-
 /**
  * Start our net server
  */
 function START_SERVER() {
+    
+    const calc = new Calculator()
+
     const PORT = 1010
     const server = net
         .createServer(function (client) {
@@ -218,14 +213,13 @@ function START_SERVER() {
 
                 const clean = calc.sanatizedInput(buffered)
                 console.log(`client input: ${clean}`, ' bytesWritten: ', client.bytesWritten)
-               
 
                 const output = calc.$result(clean)
 
                 // Print message to server
                 console.log('client output:', output, ` bytes: ${client.bytesRead}`)
                 console.log(' ')
-                
+
                 // Send and print result to client
                 client.end(output + '')
             })
@@ -241,5 +235,6 @@ function START_SERVER() {
                     console.log(JSON.stringify(err))
                 })
         })
+    return server
 }
-START_SERVER()
+module.exports = START_SERVER()
