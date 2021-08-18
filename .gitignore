@@ -62,7 +62,7 @@ journal
 # *.sdf
 *.mdf
 *.ldf
-
+info.md
 # OS generated files #
 ######################
 .DS_Store*
