@@ -2,6 +2,7 @@
 
 ## TCP-server-calculator
 Simple Node.js calculator handling 32bit unsigned integers using npm/net module to communicate with server via TCP connection, and send signal inputs via CLI and netcat on port 1010
+
 - Features:
     - User session by client address/uid
     - Always producing positive results, including zero
@@ -28,6 +29,7 @@ Nodejs, net/sockets, client session
 
 ### How to interact
 Assume we are using netcat with the command `$/ echo {input} | nc localhost 1010`
+
 - Way to understand operations is <number><operator><number>, when concatenating... Operators can add before or after the <number>, where initial input always starts with <number>
 - Incomplete sequence kept concatenating, and held in memory, unless incorrect value entered _(session is cleared)_
 - Successfully sequence handles <number><operator><number>, but before values are evaluated, you can keep concatenating.
