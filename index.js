@@ -7,9 +7,23 @@ const net = require('net')
  *
  */
 
-const safeEval = function (s, noError = true) {
+/**
+ * Safety check, make sure we only deal with operators and numbers
+ * @param {string} str
+ * @param {boolean?} noError
+ * @returns {any}
+ */
+const safeEval = function (str, noError = true) {
+    const numberSize = (str.match(/[+-/%]/g) || []).length
+    const operatorSize = (str.match(/[0-9]/g) || []).length
+    // total of operator and number strings should match initial str
+    if (numberSize + operatorSize !== (str || '').length) {
+        if (noError) return false
+        else throw 'Eval error'
+    }
+
     try {
-        return eval(s)
+        return new Function(`return ${str};`)()
     } catch (err) {
         // if test was valid, but next input was not complete
         if (noError) return false
@@ -30,15 +44,15 @@ const messages = {
     get notice() {
         let pre = 'notice'
         return {
-            ADDED: `${pre}: added`,
+            ADDED: `${pre}: concat`,
         }
     },
 }
 
-/** 
+/**
  * Collect information about the client, store each receiving packet with timestamp, id, and receiving data
- * - when value is fullfilled or returns an error, client stored data is deleted
- * - packet re/evaluates each input when not fullfilled
+ * - when value is fulfilled or returns an error, client stored data is deleted
+ * - packet re/evaluates each input when not fulfilled
  */
 class ServerStore {
     /**
@@ -88,11 +102,11 @@ class ServerStore {
                 let futureLot = (copyStore[inx + 1] || {}).data
                 lot = lot + str
 
-                console.log('[packet/lot]', lot)
-                console.log(' ')
+                //console.log('[packet/lot]', lot)
+               // console.log(' ')
 
                 try {
-                    // evaluate everytime new input is received
+                    // evaluate every time new input is received
                     /** @type {{message?:string,done?:string,next?:boolean}} */
                     let resultFound = evaluateCB.apply(this, [str, futureLot, lot, inx, copyStore.length])
 
@@ -210,7 +224,7 @@ class Calculator {
     }
 
     /**
-     * Before concatinating inputs check if it can be combined
+     * Before concatenating inputs check if it can be combined
      * @param {string} numLMixed
      * @param {string} numRMixed
      * @returns {boolean}
@@ -248,8 +262,8 @@ class Calculator {
      *  @param {string} input
      * @returns {number}
      */
-    operatorsCount(input) {      
-        return !input ? 0: this.operators.filter((n) => input.indexOf(n) !== -1).length
+    operatorsCount(input) {
+        return !input ? 0 : this.operators.filter((n) => input.indexOf(n) !== -1).length
     }
 
     /**
@@ -342,7 +356,7 @@ class Calculator {
          * @type {Array<{[name:string]:{r$:RegExp, val:number}}>}
          */
         let allowedOpRexp = [
-            // addition and substraction and one on each side
+            // addition and subtracting
             { '+x-': { r$: /^\+[0-9]\-*$/g, val: 3 } },
             { '+x+': { r$: /^\+[0-9]\+*$/g, val: 3 } },
             { '-x-': { r$: /^\-[0-9]\-*$/g, val: 3 } },
@@ -473,7 +487,7 @@ function START_SERVER() {
                     const uid = store.uid(client.address())
                     for await (const chunk of data) buffered += chunk
 
-                    console.log('server input, bytesWritten:', client.bytesWritten)
+                    console.log('server bytesWritten:', client.bytesWritten)
 
                     /**
                      *  each input gets evaluated over again for the same client session
@@ -518,19 +532,19 @@ function START_SERVER() {
                             }
 
                             // first input <operator><number> to be invalid
-                            if (calc.operatorFollowedByNumber(str) && size === 1) {
+                            if (calc.operatorFollowedByNumber(str) && size === 1 && inx === 0) {
                                 console.log(messages.errors.SYNTAX, `(7) input: ${concatStr}`)
                                 throw messages.errors.SYNTAX
                             }
 
                             // at the end/ still continue  ...<operator><number><operator>
                             if (calc.numberFollowedByOperator(str) && size - 1 === inx) {
-                                return { message: messages.notice.ADDED }
+                                return { message: messages.notice.ADDED + ` ${concatStr}` }
                             }
 
-                            // first input without <operator> skipp validation
+                            // first input without <operator> skip validation
                             if (calc.operatorsCount(str) === 0 && size === 1) {
-                                return { message: messages.notice.ADDED }
+                                return { message: messages.notice.ADDED + ` ${concatStr}` }
                             }
 
                             // if no {operator} present for the next input
