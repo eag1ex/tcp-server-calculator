@@ -30,9 +30,9 @@ Nodejs, net/sockets, client session
 ### How to interact
 Assume we are using netcat with the command `$/ echo {input} | nc localhost 1010`
 
-- Way to understand operations is <number><operator><number>, when concatenating... Operators can add before or after the <number>, where initial input always starts with <number>
+- Way to understand operations is `<number><operator><number>`, when concatenating... Operators can add before or after the `<number>`, where initial input always starts with `<number>`
 - Incomplete sequence kept concatenating, and held in memory, unless incorrect value entered _(session is cleared)_
-- Successfully sequence handles <number><operator><number>, but before values are evaluated, you can keep concatenating.
+- Successfully sequence handles `<number><operator><number>`, but before values are evaluated, you can keep concatenating.
 
 ```sh
 # example 1
