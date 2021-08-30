@@ -81,7 +81,7 @@ hello world # produce: error
 # example 12, no more then <number><operator><number> allowed
 3 # concat ...
 +3+ # concat ...
-+5 # produce: error
+5 # produce: error
 
 ```
 
